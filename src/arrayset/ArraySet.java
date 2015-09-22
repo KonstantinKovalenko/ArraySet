@@ -2,11 +2,9 @@ package arrayset;
 
 import java.util.*;
 
-public class ArraySet<TT> implements Set {
+public class ArraySet<TT> extends AbstractSet<TT> {
 
     private TT[] arraySet;
-    private TT tt;
-    private final Class classCastCheck = tt.getClass();
 
     public ArraySet() {
         arraySet = (TT[]) new Object[0];
@@ -170,16 +168,13 @@ public class ArraySet<TT> implements Set {
      * elements
      */
     @Override
-    public boolean add(Object e) {
+    public boolean add(TT e) {
         if (e == null) {
             throw new NullPointerException();
         }
-        if (classCastCheck.equals(e.getClass())) {
-            throw new ClassCastException();
-        }
         if (arraySet.length == 0) {
             arraySet = (TT[]) new Object[1];
-            arraySet[0] = (TT) e;
+            arraySet[0] = e;
             return true;
         } else {
             if (arraySet[0].getClass() != e.getClass()) {
@@ -191,10 +186,8 @@ public class ArraySet<TT> implements Set {
                 }
             }
             TT[] tempSet = (TT[]) new Object[arraySet.length + 1];
-            for (int i = 0; i < arraySet.length; i++) {
-                tempSet[i] = arraySet[i];
-            }
-            tempSet[arraySet.length] = (TT) e;
+            System.arraycopy(arraySet, 0, tempSet, 0, arraySet.length);
+            tempSet[arraySet.length] = e;
             arraySet = tempSet;
             return true;
         }
@@ -265,8 +258,8 @@ public class ArraySet<TT> implements Set {
         if (arraySet[0].getClass() != checkingArray[0].getClass()) {
             throw new ClassCastException();
         }
-        for (Object o : checkingArray) {
-            if (!contains(o)) {
+        for (Object obj : checkingArray) {
+            if (!contains(obj)) {
                 return false;
             }
         }
@@ -300,8 +293,8 @@ public class ArraySet<TT> implements Set {
                 }
             }
         }
-        for (int i = 0; i < checkingArray.length; i++) {
-            add(checkingArray[i]);
+        for (Object obj : checkingArray) {
+            add((TT) obj);
         }
         return true;
     }
@@ -322,6 +315,8 @@ public class ArraySet<TT> implements Set {
      * and this collection contains one or more elements not present in the
      * specified collection.
      *
+     * @param c collection to retain
+     * @return {@code true} if this set changed as a result of the call
      * @throws ClassCastException {@inheritDoc}
      * @throws NullPointerException {@inheritDoc}
      */
@@ -378,8 +373,8 @@ public class ArraySet<TT> implements Set {
     @Override
     public boolean removeAll(Collection c) {
         Object[] checkingArray = c.toArray();
-        for (Object o : checkingArray) {
-            remove(o);
+        for (Object obj : checkingArray) {
+            remove(obj);
         }
         return true;
     }

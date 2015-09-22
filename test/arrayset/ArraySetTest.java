@@ -141,14 +141,6 @@ public class ArraySetTest {
         arraySet.add(null);
     }
 
-    @Test(expected = ClassCastException.class)
-    public void testAddWrongClass() {
-        ArraySet<Integer> arraySet = new ArraySet<>();
-        String workString = "someString";
-        arraySet.add(workString);
-        println(arraySet);
-    }
-
     @Test
     public void testRemove() {
         ArraySet<Integer> arraySet = new ArraySet<>();
